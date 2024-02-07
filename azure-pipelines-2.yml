@@ -11,34 +11,41 @@ pool: demo
 steps:
 - task: NodeTool@0
   inputs:
-    versionSource: 'spec'
     versionSpec: '18.x'
-  displayName: 'Install Node.js'
-- task: Npm@1
-  displayName: 'Installing Modules in /client'
-  inputs:
-    command: 'install'
-    workingDir: 'client'
+    displayName: 'Install Node.js'
 
-- task: Npm@1
-  displayName: 'Installing Modules in /server'
+- script: |
+    cd client
+    npm install
+    npm run build
+  displayName: 'Build client'
+
+- task: ArchiveFiles@2
   inputs:
-    command: 'install'
-    workingDir: 'server'
-- task: Npm@1
-  displayName: 'Building Modules in /client'
-  inputs:
-    command: 'custom'
-    workingDir: 'client'
-    customCommand: 'run build'
-- task: CopyFiles@2
-  inputs:
-    Contents: |
-      client/build/**
-      server/**
-    TargetFolder: $(Build.ArtifactStagingDirectory)
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/client/build'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/client.zip'
+    replaceExistingArchive: true
+
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'release'
-    publishLocation: 'Container'
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/client.zip'
+    artifactName: 'client'
+
+- script: |
+    cd ../server
+    npm install
+    # Run any backend build tasks or tests here if needed
+  displayName: 'Install server dependencies'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/server'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/server'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/server'
+    artifactName: 'server'
