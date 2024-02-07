@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: fthagentpoolname
+pool: test
 
 steps:
 - task: NodeTool@0
