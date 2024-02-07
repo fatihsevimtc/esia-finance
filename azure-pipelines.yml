@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: test
+pool: demo
 
 steps:
 - task: NodeTool@0
