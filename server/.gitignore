@@ -1,8 +1,6 @@
 node_modules/
 .DS_Store
-*.env
 log/app.log
 log/exceptions.log
-frontend/config-ui/node_modules/
 
 
