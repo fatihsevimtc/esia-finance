@@ -6,7 +6,8 @@
 trigger:
 - main
 
-pool: demo
+pool:
+  vmImage: ubuntu-latest
 
 steps:
 - task: NodeTool@0
@@ -14,19 +15,19 @@ steps:
     versionSource: 'spec'
     versionSpec: '18.x'
   displayName: 'Install Node.js'
+
 - task: Npm@1
-  displayName: 'Installing Modules in /client'
+  displayName: 'installing module in /client'
   inputs:
     command: 'install'
     workingDir: 'client'
-
 - task: Npm@1
-  displayName: 'Installing Modules in /server'
+  displayName: 'installing module in /server'
   inputs:
     command: 'install'
     workingDir: 'server'
 - task: Npm@1
-  displayName: 'Building Modules in /client'
+  displayName: 'installing module in /client'
   inputs:
     command: 'custom'
     workingDir: 'client'
