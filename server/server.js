@@ -1,10 +1,14 @@
-
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
-const expressApp = express();
 const jwt = require('jsonwebtoken');
 const { main } = require('./app.js');
 const { log } = require('winston');
+
+const expressApp = express();
+
+// Serve static files from the React app
+expressApp.use(express.static(path.join(__dirname, 'client/build')));
 
 // Use the CORS middleware
 expressApp.use(cors());
@@ -32,20 +36,15 @@ expressApp.post('/api/login', (req, res) => {
   }
 });
 
-
-
 expressApp.put('/api/user', (req, res) => {
   const { username, password } = req.body;
   if (username && password) {
     //find the correct user and update the username and password
-
-
     res.json({ message: 'Profile updated successfully' });
   } else {
     res.status(400).json({ error: 'Invalid username or password' });
   }
 });
-
 
 expressApp.post('/api/settings', (req, res) => {
   const { cronTime, email } = req.body;
@@ -56,13 +55,10 @@ expressApp.post('/api/settings', (req, res) => {
   else {
     res.status(400).json({ error: 'Invalid cronTime or email' });
   }
-}
-);
-
+});
 
 expressApp.get('/api/sync', async (req, res) => {
   try {
-
     let data = await main();
     console.log(data);
     res.json(data);
@@ -70,4 +66,10 @@ expressApp.get('/api/sync', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+expressApp.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
