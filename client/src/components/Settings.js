@@ -21,7 +21,7 @@ const Settings = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.post('https://esiafinance.azurewebsites.net/api/settings', { cronTime, email });
+            await axios.post('https://asiafinanse.azurewebsites.net/api/settings', { cronTime, email });
             toast.success('Settings saved successfully');
             navigate('/dashboard');
         } catch (error) {

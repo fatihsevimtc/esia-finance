@@ -28,7 +28,7 @@ const Dashboard = () => {
         setData(null);
         setLoading(true);
         try {
-            const response = await axios.get('https://esiafinance.azurewebsites.net/api/sync');
+            const response = await axios.get('https://asiafinanse.azurewebsites.net/api/sync');
             setData(response.data);
         } catch (error) {
             console.error('Error syncing data:', error);

@@ -15,7 +15,7 @@ const Profile = () => {
         event.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put('https://esiafinance.azurewebsites.net/api/user', { username, password });
+            const response = await axios.put('https://asiafinanse.azurewebsites.net/api/user', { username, password });
             toast.success('Profile updated successfully');
             navigate('/dashboard');
         } catch (error) {
